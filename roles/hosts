@@ -3,4 +3,4 @@
 192.168.100.11 ansible_ssh_user=root ansible_ssh_password=password ansible_ssh_port=22 # exemplo usuario e senha
 
 [ZABBIXAGENT:vars]
-zabbix_server=209.38.254.213
+zabbix_server=192.169.100.250
