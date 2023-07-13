@@ -1,0 +1,8 @@
+- name: Common Package Centos 8
+  include_tasks: "{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yml"
+
+- name: Common Package Centos 7
+  include_tasks: RedHat7.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+  

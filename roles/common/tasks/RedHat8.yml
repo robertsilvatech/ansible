@@ -1,0 +1,33 @@
+- name: Print message
+  debug:
+    msg: "It is RedHat8.yml file"
+
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Install epel-release
+  dnf:
+    name:
+      - epel-release
+    state: present
+
+- name: dnf clean all
+  shell: dnf clean all
+
+- name: Install packages
+  dnf:
+    name: 
+        - net-snmp
+        - vim
+        - nano
+        - wget
+        - telnet
+        - rsync
+        - git
+        - net-tools
+        - tcpdump
+        - python3
+        - python3-pip
+    state: present

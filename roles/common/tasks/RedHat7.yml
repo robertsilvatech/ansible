@@ -1,0 +1,37 @@
+- name: Print message
+  debug:
+    msg: "It is RedHat7.yml file"
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Install epel-release
+  yum:
+    name:
+      - epel-release
+    state: present
+
+- name: Install packages
+  yum:
+    name: 
+        - net-snmp-utils
+        - net-snmp-devel
+        - vim
+        - nano
+        - wget
+        - telnet
+        - rsync
+        - git
+        - python36
+        - python36-pip
+        - net-tools
+    state: present
+
+- name: Install python3
+  yum:
+    name: 
+        - python36
+        - python36-pip
+    state: present
+

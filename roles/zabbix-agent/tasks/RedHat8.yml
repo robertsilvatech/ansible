@@ -1,0 +1,46 @@
+- name: Set some fact
+  set_fact:
+    zabbix_short_version: "{{ zabbix_general.version | regex_replace('\\.', '') }}"
+
+- name: Print zabbix_short_version  
+  debug:
+    msg: "{{ zabbix_short_version }}"
+
+- name: Install Zabbix Repo.
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+    gpgkey: "{{ item.gpgkey }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ zabbix_repo_yum }}"
+
+- name: Install package Zabbix
+  ansible.builtin.dnf:
+    name:
+      - zabbix-agent
+      - zabbix-get
+      - zabbix-sender
+      
+- name: Copy zabbix_agentd.conf template 
+  template:
+    src: templates/zabbix_agentd.conf.{{ zabbix_short_version }}.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify: restart zabbix-agent
+
+- name: Make sure zabbix-agent service is running
+  systemd:
+    name: zabbix-agent
+    state: started
+    enabled: yes
+
+#- name: Create firewall rule
+#  firewalld:
+#    port: 10051/tcp
+#    permanent: yes
+#    immediate: yes
+#    state: enabled
+#
+#- name: Firewalld reload
+#  command: firewall-cmd --reload
